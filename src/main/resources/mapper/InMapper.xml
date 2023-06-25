@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kinde.springboot.mapper.InMapper">
+
+
+    <select id="findPage" resultType="com.kinde.springboot.entity.In">
+        select sys_in.*, sys_drug.name as drugName, sys_suppliers.name as supplierName
+        from sys_suppliers,sys_in,sys_drug
+        <where>
+            sys_drug.id=sys_in.drug_id and sys_in.supplier_id=sys_suppliers.id
+            <if test="name != null and name != ''">
+                and sys_drug.name like concat('%',#{name},'%')
+            </if>
+        </where>
+        order by id desc
+    </select>
+</mapper>

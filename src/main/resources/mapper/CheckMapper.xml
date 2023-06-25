@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kinde.springboot.mapper.CheckMapper">
+
+    <select id="findUser" resultType="Integer">
+        select id from sys_user where nickname = #{name};
+    </select>
+
+    <select id="findPage" resultType="com.kinde.springboot.entity.Check">
+        select sys_check.*, sys_drug.name as drugName, sys_user.nickname as userName, sys_drug.number as number
+        from sys_user,sys_check,sys_drug
+        <where>
+            sys_drug.id=sys_check.drug_id and sys_check.user_id=sys_user.id
+            <if test="name != null and name != ''">
+                and sys_drug.name like concat('%',#{name},'%')
+            </if>
+        </where>
+        order by id desc
+    </select>
+</mapper>
